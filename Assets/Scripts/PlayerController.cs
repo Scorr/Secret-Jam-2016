@@ -205,7 +205,7 @@ public class PlayerController : MonoBehaviour
             renderer.SetPropertyBlock(mpb);
         }
 
-        LeanTween.move(gameObject, transform.position + -transform.up * 1.5f, 0.3f).setOnComplete(() =>
+        LeanTween.move(gameObject, transform.position + (Vector3)_rigidbody.velocity * 0.6f, 0.2f).setOnComplete(() =>
         {
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>())
             {
