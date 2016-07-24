@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BossTurret : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class BossTurret : MonoBehaviour
 
     private static int _neo; // worst code ever to make sure sound effect only plays once
     private bool _chosenOne; // ¯\_(ツ)_/¯ it's a gamejam
+
+    private Action cancel;
 
     private void Awake()
     {
@@ -19,12 +22,19 @@ public class BossTurret : MonoBehaviour
 
         _laserGameObject = transform.Find("Laser").gameObject;
         originalColor = GetComponent<SpriteRenderer>().color;
-        TankBoss.BossRekt += () =>
+        cancel = () =>
         {
             LeanTween.cancel(_shootLeanTweenId);
             LeanTween.color(gameObject, originalColor, 0f);
         };
+
+        TankBoss.BossRekt += cancel;
         Shoot();
+    }
+
+    private void OnDestroy()
+    {
+        TankBoss.BossRekt -= cancel;
     }
 
     public void Shoot()
