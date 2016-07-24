@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerupSpawner : MonoBehaviour
@@ -9,13 +8,24 @@ public class PowerupSpawner : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SpawnPowerup());
+        StartCoroutine(SpawnPowerup(true));
+        StartCoroutine(SpawnPowerup(false));
     }
 
-    public IEnumerator SpawnPowerup()
+    public IEnumerator SpawnPowerup(bool leftHalf)
     {
-        float minX = -5.7f;
-        float maxX = 5.7f;
+        float minX;
+        float maxX;
+        if (leftHalf)
+        {
+            minX = -5.7f;
+            maxX = 0f;
+        }
+        else
+        {
+            minX = 0f;
+            maxX = 5.7f;
+        }
         float minY = -2.6f; // Bottom of scene
         float maxY = 2.6f;
 

@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public IObservable<Vector2> Rotation { get; private set; }
     public ReactiveProperty<float> DashCooldown;
     public float MaxDashCooldown { get; set; }
-    private float _moveSpeed = 0.05f;
+    private float _moveSpeed = 0.1f;
     [SerializeField] private Animator _legsAnimator;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _shootTransformRight;
@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.tag == "Powerup")
         {
-            StartCoroutine(_powerupSpawner.SpawnPowerup());
+            StartCoroutine(_powerupSpawner.SpawnPowerup(collision.transform.position.x > 0f));
             _boosted = true;
             Invoke("Unboost", 3f);
             Destroy(collision.gameObject);
@@ -169,6 +169,7 @@ public class PlayerController : MonoBehaviour
                 else
                     Instantiate(_boostedBulletPrefab, _shooTransformLeft.position,
                         Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, 90)));
+                Screenshake.Instance.DoShake(0.1f, 0.03f);
                 _shootCooldown = 0.15f;
             }
             else
