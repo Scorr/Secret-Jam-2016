@@ -77,12 +77,26 @@ public class TankBoss : MonoBehaviour
     private void Shoot()
     {
         _shotsFired++;
-        if (_shotsFired%4 == 0) // Wait after every third shot.
+        if (_shotsFired % 5 == 0) // Wait after every fourth shot.
         {
-            _cooldown = 1.75f;
+            _cooldown = 1f;
             return;
         }
-        else if (_shotsFired%5 == 0)
+        else if (_shotsFired%9 == 0)
+        {
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, -40f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, -20f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 0f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 20f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 40f));
+            _cooldown = 1f;
+        }
+        else if (_shotsFired%6 == 0)
         {
             Instantiate(_bulletPrefab, _shootTransform.position,
                 _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -40f));
@@ -92,7 +106,7 @@ public class TankBoss : MonoBehaviour
                 _cannon.transform.rotation*Quaternion.Euler(0f, 0f, 20f));
             Instantiate(_bulletPrefab, _shootTransform.position,
                 _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 40f));
-            _cooldown = 1.5f;
+            _cooldown = 1f;
         }
         else
         {
@@ -101,7 +115,7 @@ public class TankBoss : MonoBehaviour
                 _cannon.transform.rotation*Quaternion.Euler(0f, 0f, 30f));
             Instantiate(_bulletPrefab, _shootTransform.position,
                 _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -30f));
-            _cooldown = 1f;
+            _cooldown = 0.5f;
         }
         
         SoundManager.Instance.PlaySound("bossshoot", 0.3f);
