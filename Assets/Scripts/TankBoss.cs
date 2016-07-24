@@ -20,7 +20,7 @@ public class TankBoss : MonoBehaviour
     [SerializeField] private Transform _shootTransform; // The position where bullets get instantiated.
     [SerializeField] private GameObject _bulletPrefab;
     private float _cooldown;
-    private int _shotsFired;
+    private int _shotsFired = -1; // Don't start at 0 to give the player a second of breathing when game starts.
 
     private void Awake()
     {
@@ -76,19 +76,33 @@ public class TankBoss : MonoBehaviour
 
     private void Shoot()
     {
+        _shotsFired++;
         if (_shotsFired%4 == 0) // Wait after every third shot.
         {
-            _shotsFired++;
             _cooldown = 1.75f;
             return;
         }
-        Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation);
-        //Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 15f)); // Let's not make it too hard.
-        Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 30f));
-        //Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation * Quaternion.Euler(0f, 0f, -15f));
-        Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation * Quaternion.Euler(0f, 0f, -30f));
-        _cooldown = 1f;
-        _shotsFired++;
+        else if (_shotsFired%5 == 0)
+        {
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -40f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -20f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, 20f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 40f));
+            _cooldown = 1.5f;
+        }
+        else
+        {
+            Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation);
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, 30f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -30f));
+            _cooldown = 1f;
+        }
         
         SoundManager.Instance.PlaySound("bossshoot", 0.3f);
     }
