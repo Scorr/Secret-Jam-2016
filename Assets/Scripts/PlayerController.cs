@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _shooTransformLeft;
     [SerializeField] private Material _spriteMaterial;
     [SerializeField] private Material _distortionMaterial;
+    [SerializeField] private PowerupSpawner _powerupSpawner;
+    [SerializeField] private GameObject _boostedBulletPrefab;
     private Rigidbody2D _rigidbody;
     private bool _knockback; // Add knockback force in FixedUpdate?
 
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private int _shotsFired; // Used for determining which gun to fire from.
     private bool _gameOver;
     private bool _invulnerable;
+    private bool _boosted; // picked up a powerup?
 
     private void Awake()
     {
@@ -108,6 +111,14 @@ public class PlayerController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.tag == "Powerup")
+        {
+            StartCoroutine(_powerupSpawner.SpawnPowerup());
+            _boosted = true;
+            Invoke("Unboost", 3f);
+            Destroy(collision.gameObject);
+        }
+
         if (_invulnerable)
             return;
 
@@ -120,6 +131,14 @@ public class PlayerController : MonoBehaviour
         {
             GameOver();
         }
+    }
+
+    /// <summary>
+    /// Use in conjunction with Invoke to disable powerup after a delay.
+    /// </summary>
+    private void Unboost()
+    {
+        _boosted = false;
     }
 
     private void GameOver()
@@ -142,12 +161,27 @@ public class PlayerController : MonoBehaviour
     {
         if (_shootCooldown <= 0 && Shooting)
         {
-            if (_shotsFired % 2 == 0)
-                Instantiate(_bulletPrefab, _shootTransformRight.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, 90)));
+            if (_boosted)
+            {
+                if (_shotsFired % 2 == 0)
+                    Instantiate(_boostedBulletPrefab, _shootTransformRight.position,
+                        Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, 90)));
+                else
+                    Instantiate(_boostedBulletPrefab, _shooTransformLeft.position,
+                        Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, 90)));
+                _shootCooldown = 0.15f;
+            }
             else
-                Instantiate(_bulletPrefab, _shooTransformLeft.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, 90)));
+            {
+                if (_shotsFired%2 == 0)
+                    Instantiate(_bulletPrefab, _shootTransformRight.position,
+                        Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, 90)));
+                else
+                    Instantiate(_bulletPrefab, _shooTransformLeft.position,
+                        Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, 90)));
+                _shootCooldown = 0.25f;
+            }
             _shotsFired++;
-            _shootCooldown = 0.25f;
             _knockback = true;
             
             SoundManager.Instance.PlaySound("playershoot", 0.4f);
@@ -170,7 +204,7 @@ public class PlayerController : MonoBehaviour
             renderer.SetPropertyBlock(mpb);
         }
 
-        LeanTween.move(gameObject, transform.position + -transform.up * 2f, 0.3f).setOnComplete(() =>
+        LeanTween.move(gameObject, transform.position + -transform.up * 2.5f, 0.8f).setOnComplete(() =>
         {
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>())
             {

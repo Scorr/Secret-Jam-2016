@@ -896,14 +896,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c841e973082a645a906e83fbbc9135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 300
   _explosionPrefab: {fileID: 1000013893912030, guid: eda8c0b3dce370f4aa5e756b91d7cab6,
     type: 2}
   _cannon: {fileID: 1901683699}
   _base: {fileID: 1560272485}
   _player: {fileID: 995253359}
   _cannonRotationSpeed: 75
-  _baseRotationSpeed: 15
+  _baseRotationSpeed: 30
   _shootTransform: {fileID: 279428820}
   _bulletPrefab: {fileID: 1000013962226138, guid: c27f39e3e1828494aa22346ff003a49b,
     type: 2}
@@ -1988,6 +1988,9 @@ MonoBehaviour:
   _shooTransformLeft: {fileID: 556203006}
   _spriteMaterial: {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
   _distortionMaterial: {fileID: 2100000, guid: 92b7d304eac507046ad975a8b0d4b69a, type: 2}
+  _powerupSpawner: {fileID: 1324946267}
+  _boostedBulletPrefab: {fileID: 1000013962226138, guid: cc606bd05f2816244b5c228f0d9ee893,
+    type: 2}
 --- !u!50 &995253361
 Rigidbody2D:
   serializedVersion: 4
@@ -2028,7 +2031,7 @@ CircleCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 995253358}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -2153,7 +2156,7 @@ GameObject:
   - 4: {fileID: 1273938027}
   - 212: {fileID: 1273938026}
   m_Layer: 0
-  m_Name: background
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2209,6 +2212,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1324946266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1324946268}
+  - 114: {fileID: 1324946267}
+  m_Layer: 0
+  m_Name: PowerupSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1324946267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1324946266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 709cedf093ab1a3479d9a1edea71ed43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _powerupPrefab: {fileID: 1000011732140708, guid: 9191e90ddcd11e7478fe7f8b002f0e76,
+    type: 2}
+  _cooldownBetweenPickups: 3
+--- !u!4 &1324946268
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1324946266}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1469138581
 GameObject:

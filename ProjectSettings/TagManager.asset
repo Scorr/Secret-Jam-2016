@@ -7,6 +7,7 @@ TagManager:
   - Bullet
   - BossBullet
   - BossLaser
+  - Powerup
   layers:
   - Default
   - TransparentFX

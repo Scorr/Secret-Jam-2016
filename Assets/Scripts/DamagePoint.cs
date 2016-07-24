@@ -23,7 +23,7 @@ public class DamagePoint : MonoBehaviour
         if (collision.tag == "Bullet")
         {
             Destroy(collision.gameObject);
-            _boss.TakeDamage(1f);
+            _boss.TakeDamage(collision.GetComponent<Bullet>().Damage);
             
             StopAllCoroutines();
             _spriteRenderer.color = originalColor;

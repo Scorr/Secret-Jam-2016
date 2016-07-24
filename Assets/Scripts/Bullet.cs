@@ -2,6 +2,8 @@
 
 public class Bullet : MonoBehaviour
 {
+    public float Damage = 1f;
+
     private void Awake()
     {
         // Set constant moving force.

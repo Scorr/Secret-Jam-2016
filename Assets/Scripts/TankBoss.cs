@@ -71,7 +71,7 @@ public class TankBoss : MonoBehaviour
 
     private void MoveForward()
     {
-        _rigidbody.velocity = _base.transform.right * 0.25f;
+        _rigidbody.velocity = _base.transform.right * 0.5f;
     }
 
     private void Shoot()
@@ -107,6 +107,16 @@ public class TankBoss : MonoBehaviour
             Instantiate(_bulletPrefab, _shootTransform.position,
                 _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 40f));
             _cooldown = 1f;
+        }
+        else if (_shotsFired%2 == 0)
+        {
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, Random.Range(-60f, -30f))); ;
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, Random.Range(-15f, 15f)));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, Random.Range(30f, 60f)));
+            _cooldown = 0.5f;
         }
         else
         {
@@ -160,7 +170,7 @@ public class TankBoss : MonoBehaviour
 
     public void InstantiateExplosion()
     {
-        var explosion = (GameObject)Instantiate(_explosionPrefab, (Vector2)transform.position + Random.insideUnitCircle, Quaternion.identity);
+        var explosion = (GameObject)Instantiate(_explosionPrefab, (Vector2)transform.position + Random.insideUnitCircle*1.2f, Quaternion.identity);
         float minScale = 1.5f;
         float maxScale = 3.5f;
         float randomScale = Random.Range(minScale, maxScale);
