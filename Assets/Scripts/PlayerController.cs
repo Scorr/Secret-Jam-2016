@@ -33,15 +33,15 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         DashCooldown = new ReactiveProperty<float>(0f);
-        MaxDashCooldown = 1f;
+        MaxDashCooldown = 2f;
         Shooting = true;
         _rigidbody = GetComponent<Rigidbody2D>();
 
         Movement = this.UpdateAsObservable()
           .Select(_ =>
           {
-              var x = Input.GetAxis("Horizontal");
-              var y = Input.GetAxis("Vertical");
+              var x = Input.GetAxisRaw("Horizontal");
+              var y = Input.GetAxisRaw("Vertical");
               return new Vector2(x, y);
           });
 
@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
             renderer.SetPropertyBlock(mpb);
         }
 
-        LeanTween.move(gameObject, transform.position + -transform.up * 2.5f, 0.8f).setOnComplete(() =>
+        LeanTween.move(gameObject, transform.position + -transform.up * 2f, 0.5f).setOnComplete(() =>
         {
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>())
             {

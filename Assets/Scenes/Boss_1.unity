@@ -896,7 +896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c841e973082a645a906e83fbbc9135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 300
+  MaxHealth: 200
   _explosionPrefab: {fileID: 1000013893912030, guid: eda8c0b3dce370f4aa5e756b91d7cab6,
     type: 2}
   _cannon: {fileID: 1901683699}

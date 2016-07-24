@@ -108,16 +108,6 @@ public class TankBoss : MonoBehaviour
                 _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 40f));
             _cooldown = 1f;
         }
-        else if (_shotsFired%2 == 0)
-        {
-            Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, Random.Range(-60f, -30f))); ;
-            Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, Random.Range(-15f, 15f)));
-            Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, Random.Range(30f, 60f)));
-            _cooldown = 0.5f;
-        }
         else
         {
             Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation);
