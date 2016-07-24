@@ -8,8 +8,7 @@ public class SoundManager : Singleton<SoundManager>
 {
     private static bool _waitingforintro; // stupid exceptional fix.
     private AudioSource _source;
-    private AudioClip _introMusic;
-    private AudioClip _loopMusic;
+    private readonly Dictionary<string, AudioClip> _audioCache = new Dictionary<string, AudioClip>();
 
     private void Awake()
     {
@@ -18,13 +17,13 @@ public class SoundManager : Singleton<SoundManager>
 
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
-            _introMusic = Resources.Load<AudioClip>("intro");
-            _source.clip = _introMusic;
+            _audioCache.Add("intromusic", Resources.Load<AudioClip>("intro"));
+            _source.clip = _audioCache["intromusic"];
             _source.Play();
 
             if (!_waitingforintro)
             {
-                _loopMusic = Resources.Load<AudioClip>("loop");
+                _audioCache.Add("loopmusic", Resources.Load<AudioClip>("loop"));
                 StartCoroutine(PlayMusic());
             }
         }
@@ -33,15 +32,24 @@ public class SoundManager : Singleton<SoundManager>
     private IEnumerator PlayMusic()
     {
         _waitingforintro = true;
-        yield return new WaitForSecondsRealtime(_introMusic.length);
+        yield return new WaitForSecondsRealtime(_audioCache["intromusic"].length);
         _waitingforintro = false;
-        _source.clip = _loopMusic;
+        _source.clip = _audioCache["loopmusic"];
         _source.loop = true;
         _source.Play();
     }
 
     public void PlaySound(string name, float volume = 1f)
     {
-        _source.PlayOneShot(Resources.Load<AudioClip>(name), volume);
+        AudioClip clip;
+        if (_audioCache.TryGetValue(name, out clip))
+        {
+            _source.PlayOneShot(clip, volume);
+        }
+        else
+        {
+            _audioCache.Add(name, Resources.Load<AudioClip>(name));
+            _source.PlayOneShot(_audioCache[name], volume);
+        }
     }
 }
