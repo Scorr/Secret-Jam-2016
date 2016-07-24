@@ -114,8 +114,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 28891645}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: -0.7071068}
-  m_LocalPosition: {x: -0, y: 1.0999998, z: 0}
-  m_LocalScale: {x: 15, y: 1.4999999, z: 1}
+  m_LocalPosition: {x: 0, y: 0.65, z: 0}
+  m_LocalScale: {x: 8, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1469138582}
   m_RootOrder: 0
@@ -183,6 +183,7 @@ GameObject:
   - 4: {fileID: 61786754}
   - 212: {fileID: 61786756}
   - 95: {fileID: 61786755}
+  - 114: {fileID: 61786757}
   m_Layer: 0
   m_Name: Legs
   m_TagString: Untagged
@@ -258,6 +259,18 @@ SpriteRenderer:
   m_SliceFullTiling: 1
   m_MaskingSetup: 0
   m_MaskAlphaCutoff: 0.2
+--- !u!114 &61786757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 61786753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12b1e0d5af61584cb9cc4cf0e62f91c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _glitchEffect: {fileID: 2100000, guid: 92b7d304eac507046ad975a8b0d4b69a, type: 2}
 --- !u!1 &74416615
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,6 +375,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 87638448}
   - 212: {fileID: 87638449}
+  - 114: {fileID: 87638450}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -420,6 +434,18 @@ SpriteRenderer:
   m_SliceFullTiling: 1
   m_MaskingSetup: 0
   m_MaskAlphaCutoff: 0.2
+--- !u!114 &87638450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 87638447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12b1e0d5af61584cb9cc4cf0e62f91c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _glitchEffect: {fileID: 2100000, guid: 92b7d304eac507046ad975a8b0d4b69a, type: 2}
 --- !u!1 &141012678
 GameObject:
   m_ObjectHideFlags: 0
@@ -2572,6 +2598,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1836427619}
   - 212: {fileID: 1836427620}
+  - 114: {fileID: 1836427621}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -2630,6 +2657,18 @@ SpriteRenderer:
   m_SliceFullTiling: 1
   m_MaskingSetup: 0
   m_MaskAlphaCutoff: 0.2
+--- !u!114 &1836427621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1836427618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12b1e0d5af61584cb9cc4cf0e62f91c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _glitchEffect: {fileID: 2100000, guid: 92b7d304eac507046ad975a8b0d4b69a, type: 2}
 --- !u!1 &1852687010
 GameObject:
   m_ObjectHideFlags: 0
@@ -2910,8 +2949,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1963779409}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: -0.7071068}
-  m_LocalPosition: {x: -0, y: 1.0999998, z: 0}
-  m_LocalScale: {x: 15, y: 1.4999999, z: 1}
+  m_LocalPosition: {x: 0, y: 0.65, z: 0}
+  m_LocalScale: {x: 8, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 215894533}
   m_RootOrder: 0
@@ -3171,6 +3210,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2071744815}
   - 212: {fileID: 2071744816}
+  - 114: {fileID: 2071744817}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -3231,3 +3271,15 @@ SpriteRenderer:
   m_SliceFullTiling: 1
   m_MaskingSetup: 0
   m_MaskAlphaCutoff: 0.2
+--- !u!114 &2071744817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2071744814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12b1e0d5af61584cb9cc4cf0e62f91c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _glitchEffect: {fileID: 2100000, guid: 92b7d304eac507046ad975a8b0d4b69a, type: 2}

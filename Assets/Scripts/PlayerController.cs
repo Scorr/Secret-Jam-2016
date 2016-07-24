@@ -29,9 +29,11 @@ public class PlayerController : MonoBehaviour
     private bool _gameOver;
     private bool _invulnerable;
     private bool _boosted; // picked up a powerup?
+    private SpriteTrail[] _trailers;
 
     private void Awake()
     {
+        _trailers = GetComponentsInChildren<SpriteTrail>();
         DashCooldown = new ReactiveProperty<float>(0f);
         MaxDashCooldown = 2f;
         Shooting = true;
@@ -113,7 +115,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.tag == "Powerup")
         {
-            StartCoroutine(_powerupSpawner.SpawnPowerup(collision.transform.position.x > 0f));
+            StartCoroutine(_powerupSpawner.SpawnPowerup(collision.transform.position.x < 0f));
             _boosted = true;
             Invoke("Unboost", 3f);
             Destroy(collision.gameObject);
@@ -147,7 +149,31 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 0;
         SoundManager.Instance.PlaySound("death", 0.5f);
         LeanTween.alpha(gameObject, 0f, 0.1f).setLoopPingPong().setUseEstimatedTime(true);
+        StartCoroutine(DeathAnimation());
         StartCoroutine(GameOverDelay());
+    }
+
+    private IEnumerator DeathAnimation()
+    {
+        float value = 0f;
+        float startTime = Time.realtimeSinceStartup;
+
+        while (value <= 1f)
+        {
+            foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>())
+            {
+                renderer.material = _distortionMaterial;
+                var mpb = new MaterialPropertyBlock();
+                renderer.GetPropertyBlock(mpb);
+                mpb.SetFloat("_Outline", 1f);
+                mpb.SetColor("_OutlineColor", Color.white);
+                mpb.SetFloat("_FadeoutValue", value);
+                renderer.SetPropertyBlock(mpb);
+            }
+            value += Time.realtimeSinceStartup - startTime;
+            startTime = Time.realtimeSinceStartup;
+            yield return new WaitForSecondsRealtime(0f);
+        }
     }
 
     private IEnumerator GameOverDelay()
@@ -201,17 +227,27 @@ public class PlayerController : MonoBehaviour
             renderer.GetPropertyBlock(mpb);
             mpb.SetFloat("_Outline", 1f);
             mpb.SetColor("_OutlineColor", Color.white);
-            mpb.SetFloat("_FadeoutValue", 0.5f);
+            mpb.SetFloat("_FadeoutValue", 0.4f);
             renderer.SetPropertyBlock(mpb);
         }
 
-        LeanTween.move(gameObject, transform.position + (Vector3)_rigidbody.velocity * 0.6f, 0.2f).setOnComplete(() =>
+        for (int i = 0; i < _trailers.Length; i++)
+        {
+            _trailers[i].StartTrailing();
+        }
+
+        LeanTween.move(gameObject, transform.position + (Vector3)_rigidbody.velocity * 0.5f, 0.2f).setOnComplete(() =>
         {
             foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>())
             {
                 renderer.material = _spriteMaterial;
             }
             _invulnerable = false;
+
+            for (int i = 0; i < _trailers.Length; i++)
+            {
+                _trailers[i].StopTrailing();
+            }
         });
 
         _invulnerable = true;

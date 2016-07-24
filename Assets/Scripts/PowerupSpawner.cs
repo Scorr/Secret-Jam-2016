@@ -19,11 +19,11 @@ public class PowerupSpawner : MonoBehaviour
         if (leftHalf)
         {
             minX = -5.7f;
-            maxX = 0f;
+            maxX = -1.5f;
         }
         else
         {
-            minX = 0f;
+            minX = 1.5f;
             maxX = 5.7f;
         }
         float minY = -2.6f; // Bottom of scene

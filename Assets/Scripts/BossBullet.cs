@@ -6,7 +6,7 @@ public class BossBullet : Bullet
     {
         // Set constant moving force.
         var rigidbody = GetComponent<Rigidbody2D>();
-        rigidbody.velocity = transform.right * 5f;
+        rigidbody.velocity = transform.right * 3f;
         Invoke("DestroySelf", 3f);
     }
 }

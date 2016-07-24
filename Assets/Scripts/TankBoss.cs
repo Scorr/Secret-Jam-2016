@@ -20,6 +20,8 @@ public class TankBoss : MonoBehaviour
     [SerializeField] private Transform _shootTransform; // The position where bullets get instantiated.
     [SerializeField] private GameObject _bulletPrefab;
     private float _cooldown;
+    private float _backupCooldown; // time between gtfo'ing
+    private bool _gtfoing;
     private int _shotsFired = -1; // Don't start at 0 to give the player a second of breathing when game starts.
 
     private void Awake()
@@ -35,7 +37,7 @@ public class TankBoss : MonoBehaviour
         {
             RotateCannon();
             RotateBody();
-            MoveForward();
+            Move();
 
             if (_cooldown > 0)
             {
@@ -45,6 +47,16 @@ public class TankBoss : MonoBehaviour
             {
                 _cooldown = 0;
                 Shoot();
+            }
+
+            if (_backupCooldown > 0)
+            {
+                _backupCooldown -= Time.deltaTime;
+            }
+            else
+            {
+                _backupCooldown = _gtfoing ? 3f : 5f;
+                _gtfoing = !_gtfoing;
             }
         }
     }
@@ -69,9 +81,18 @@ public class TankBoss : MonoBehaviour
         _base.transform.rotation = newRotation;
     }
 
-    private void MoveForward()
+    private void Move()
     {
-        _rigidbody.velocity = _base.transform.right * 0.5f;
+        float distance = Vector3.Distance(transform.position, _player.transform.position);
+        if (distance <= 3f)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            return;
+        }
+        if (_gtfoing)
+            _rigidbody.velocity = _base.transform.right * 0.5f;
+        else
+            _rigidbody.velocity = -_base.transform.right * 0.5f;
     }
 
     private void Shoot()
@@ -79,43 +100,47 @@ public class TankBoss : MonoBehaviour
         _shotsFired++;
         if (_shotsFired % 5 == 0) // Wait after every fourth shot.
         {
-            _cooldown = 1f;
+            _cooldown = 0.6f;
             return;
-        }
-        else if (_shotsFired%9 == 0)
-        {
-            Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, -40f));
-            Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, -20f));
-            Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 0f));
-            Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 20f));
-            Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 40f));
-            _cooldown = 1f;
         }
         else if (_shotsFired%6 == 0)
         {
             Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -40f));
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -60f));
             Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -20f));
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -30f));
             Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, 20f));
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, 30f));
             Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 40f));
-            _cooldown = 1f;
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 60f));
+            _cooldown = 0.4f;
+        }
+        else if (_shotsFired % 3 == 0)
+        {
+            Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation);
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, -15));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 15f));
+            _cooldown = 0.4f;
+        }
+        else if (_shotsFired % 2 == 0)
+        {
+            Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation);
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, -60f));
+            Instantiate(_bulletPrefab, _shootTransform.position,
+                _cannon.transform.rotation * Quaternion.Euler(0f, 0f, 60f));
+            _cooldown = 0.4f;
         }
         else
         {
             Instantiate(_bulletPrefab, _shootTransform.position, _cannon.transform.rotation);
             Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, 30f));
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, 45f));
             Instantiate(_bulletPrefab, _shootTransform.position,
-                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -30f));
-            _cooldown = 0.5f;
+                _cannon.transform.rotation*Quaternion.Euler(0f, 0f, -45f));
+            _cooldown = 0.4f;
         }
         
         SoundManager.Instance.PlaySound("bossshoot", 0.3f);
